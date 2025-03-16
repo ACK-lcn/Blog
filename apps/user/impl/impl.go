@@ -4,12 +4,21 @@ import (
 	"context"
 
 	"github.com/ACK-lcn/Blog/apps/user"
+	"gorm.io/gorm"
 )
 
 // Used to explicitly constrain the implementation of the interface
 var _ user.Service = &UserServiceImpl{}
 
-type UserServiceImpl struct{}
+func NewUserServiceImpl() *UserServiceImpl {
+	return &UserServiceImpl{
+		db: nil,
+	}
+}
+
+type UserServiceImpl struct {
+	db *gorm.DB
+}
 
 // Create User
 func (i *UserServiceImpl) CreateUser(context.Context, *user.CreateUserRequest) (*user.User, error) {
