@@ -14,7 +14,10 @@ var (
 )
 
 func TestCreateUser(t *testing.T) {
-	u, err := userSvc.CreateUser(ctx, &user.CreateUserRequest{})
+	req := user.NewCreateUserRequest()
+	req.Username = "admin"
+	req.Password = "admin123"
+	u, err := userSvc.CreateUser(ctx, req)
 	if err != nil {
 		t.Fatal(err)
 		t.Log(u)
