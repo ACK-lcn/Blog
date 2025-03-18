@@ -4,15 +4,19 @@ import (
 	"context"
 
 	"github.com/ACK-lcn/Blog/apps/user"
+	"github.com/ACK-lcn/Blog/conf"
 	"gorm.io/gorm"
 )
 
 // Used to explicitly constrain the implementation of the interface
 var _ user.Service = &UserServiceImpl{}
 
+// Both need to be called after initial configuration.
 func NewUserServiceImpl() *UserServiceImpl {
 	return &UserServiceImpl{
-		db: nil,
+		db: conf.C().MySQL.GetConnection(),
+		// Turn on debug
+		// db: conf.C().MySQL.GetConnection().Debug(),
 	}
 }
 

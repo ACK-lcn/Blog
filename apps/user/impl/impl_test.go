@@ -9,7 +9,7 @@ import (
 )
 
 var (
-	userSvc *impl.UserServiceImpl
+	userSvc user.Service
 	ctx     = context.Background()
 )
 
@@ -20,15 +20,35 @@ func TestCreateUser(t *testing.T) {
 	u, err := userSvc.CreateUser(ctx, req)
 	if err != nil {
 		t.Fatal(err)
-		t.Log(u)
 	}
+	t.Log(u)
 }
 
 func TestDeleteUser(t *testing.T) {
-	err := userSvc.DeleteUser(ctx, &user.DeleteUserRequest{})
+	err := userSvc.DeleteUser(ctx, &user.DeleteUserRequest{
+		Id: 9,
+	})
 	if err != nil {
 		t.Fatal(err)
 	}
+}
+
+func TestDescribeUserRequestById(t *testing.T) {
+	req := user.NewDescribeUserRequestById("9")
+	ins, err := userSvc.DescribeUser(ctx, req)
+	if err != nil {
+		t.Fatal(err)
+	}
+	t.Log(ins)
+}
+
+func TestDescribeUserRequestByName(t *testing.T) {
+	req := user.NewDescribeUserRequestByUsername("blog")
+	ins, err := userSvc.DescribeUser(ctx, req)
+	if err != nil {
+		t.Fatal(err)
+	}
+	t.Log(ins)
 }
 
 func init() {

@@ -45,7 +45,7 @@ func (req *CreateUserRequest) PasswordHash() {
 	}
 	b, err := bcrypt.GenerateFromPassword([]byte(req.Password), bcrypt.DefaultCost)
 	if err != nil {
-		fmt.Printf("bcrypt.GenerateFromPassword error", err)
+		fmt.Println("bcrypt.GenerateFromPassword error", err)
 	}
 	req.Password = base64.StdEncoding.EncodeToString(b)
 	req.isHashed = true
