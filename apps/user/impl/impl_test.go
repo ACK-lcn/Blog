@@ -6,6 +6,7 @@ import (
 
 	"github.com/ACK-lcn/Blog/apps/user"
 	"github.com/ACK-lcn/Blog/apps/user/impl"
+	"github.com/ACK-lcn/Blog/exception"
 )
 
 var (
@@ -29,6 +30,9 @@ func TestDeleteUser(t *testing.T) {
 		Id: 9,
 	})
 	if err != nil {
+		if v, ok := err.(*exception.ApiException); ok {
+			t.Fatal("error code", v.Code)
+		}
 		t.Fatal(err)
 	}
 }

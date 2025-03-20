@@ -1,0 +1,1 @@
+# Custom business exception.

@@ -5,6 +5,7 @@ import (
 
 	"github.com/ACK-lcn/Blog/apps/user"
 	"github.com/ACK-lcn/Blog/conf"
+	"github.com/ACK-lcn/Blog/exception"
 	"gorm.io/gorm"
 )
 
@@ -60,6 +61,9 @@ func (i *UserServiceImpl) DescribeUser(ctx context.Context, req *user.DescribeUs
 
 	ins := user.NewUser(user.NewCreateUserRequest())
 	if err := query.First(ins).Error; err != nil {
+		if err == gorm.ErrRecordNotFound {
+			return nil, exception.NewNotFound("user %s not found", req.DescribeValue)
+		}
 		return nil, err
 	}
 	return ins, nil
