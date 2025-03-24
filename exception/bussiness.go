@@ -18,3 +18,7 @@ func IsNotFound(err error) bool {
 func NewAuthFailed(format string, a ...any) *ApiException {
 	return New(5000, format, a...)
 }
+
+func NewTokenExpired(format string, a ...any) *ApiException {
+	return New(5001, format, a...)
+}

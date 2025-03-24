@@ -29,3 +29,9 @@ type LogoutRequest struct {
 type ValiateToken struct {
 	AccessToken string `json:"access_token"`
 }
+
+func NewValiateToken(at string) *ValiateToken {
+	return &ValiateToken{
+		AccessToken: at,
+	}
+}
