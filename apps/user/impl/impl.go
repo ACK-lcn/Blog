@@ -66,6 +66,10 @@ func (i *UserServiceImpl) DescribeUser(ctx context.Context, req *user.DescribeUs
 		}
 		return nil, err
 	}
+
+	// The hash value is stored in the database.
+	ins.SetIsHashed()
+
 	return ins, nil
 }
 

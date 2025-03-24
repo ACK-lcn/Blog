@@ -2,7 +2,6 @@ package user
 
 import (
 	"context"
-	"encoding/base64"
 	"fmt"
 
 	"golang.org/x/crypto/bcrypt"
@@ -47,7 +46,11 @@ func (req *CreateUserRequest) PasswordHash() {
 	if err != nil {
 		fmt.Println("bcrypt.GenerateFromPassword error", err)
 	}
-	req.Password = base64.StdEncoding.EncodeToString(b)
+	req.Password = string(b)
+	req.isHashed = true
+}
+
+func (req *CreateUserRequest) SetIsHashed() {
 	req.isHashed = true
 }
 
