@@ -21,7 +21,7 @@ func DefaultConfig() *Config {
 		},
 		App: &App{
 			HttpHost: "0.0.0.0",
-			HttpPort: 8080,
+			HttpPort: 9080,
 		},
 	}
 }
