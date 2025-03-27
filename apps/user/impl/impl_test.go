@@ -31,7 +31,7 @@ func TestDeleteUser(t *testing.T) {
 	})
 	if err != nil {
 		if v, ok := err.(*exception.ApiException); ok {
-			t.Fatal("error code", v.Code)
+			t.Fatal("error code", v.BizCode)
 		}
 		t.Fatal(err)
 	}
