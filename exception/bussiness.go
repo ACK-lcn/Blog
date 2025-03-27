@@ -7,7 +7,7 @@ func NewNotFound(format string, a ...any) *ApiException {
 
 func IsNotFound(err error) bool {
 	if e, ok := err.(*ApiException); ok {
-		if e.Code == 404 {
+		if e.BizCode == 404 {
 			return true
 		}
 	}
