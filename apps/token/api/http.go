@@ -4,6 +4,7 @@ import (
 	"net/http"
 
 	"github.com/ACK-lcn/Blog/apps/token"
+	"github.com/ACK-lcn/Blog/exception"
 	"github.com/gin-gonic/gin"
 )
 
@@ -44,4 +45,25 @@ func (h *TokenApiHandler) Login(c *gin.Context) {
 	c.JSON(http.StatusOK, ins)
 }
 
-func (h *TokenApiHandler) Logout(*gin.Context) {}
+// Logout Handler function.
+func (h *TokenApiHandler) Logout(c *gin.Context) {
+	// Create and parse logout request parameters.
+	inReq := token.NewLogoutRequest()
+	if err := c.BindJSON(inReq); err != nil {
+		c.JSON(http.StatusBadRequest, gin.H{"error": "Invalid request parameters"})
+		return
+	}
+
+	// Call the Service layer to handle the logout logic.
+	err := h.svc.Logout(c.Request.Context(), inReq)
+	if err != nil {
+		// Handle specific errors.
+		if exception.IsNotFound(err) {
+			c.JSON(http.StatusNotFound, gin.H{"error": "Token not found or already invalid"})
+			return
+		}
+	}
+
+	// Return success response（200）.
+	c.JSON(http.StatusOK, gin.H{"message": "Successfully logged out"})
+}

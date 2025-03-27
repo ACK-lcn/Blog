@@ -26,6 +26,10 @@ type LogoutRequest struct {
 	RefreshToken string `json:"refresh_token"`
 }
 
+func NewLogoutRequest() *LogoutRequest {
+	return &LogoutRequest{}
+}
+
 type ValiateToken struct {
 	AccessToken string `json:"access_token"`
 }
