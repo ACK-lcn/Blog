@@ -5,6 +5,7 @@ import (
 
 	"github.com/ACK-lcn/Blog/apps/token"
 	"github.com/ACK-lcn/Blog/exception"
+	"github.com/ACK-lcn/Blog/response"
 	"github.com/gin-gonic/gin"
 )
 
@@ -31,18 +32,19 @@ func (h *TokenApiHandler) Login(c *gin.Context) {
 	inReq := token.NewLoginRequest()
 	err := c.BindJSON(inReq)
 	if err != nil {
-		c.JSON(http.StatusBadRequest, err.Error())
+		response.Failed(c, err)
 		return
 	}
 
 	ins, err := h.svc.Login(c.Request.Context(), inReq)
 	if err != nil {
-		c.JSON(http.StatusBadRequest, err.Error())
+		response.Failed(c, err)
 		return
 	}
 
 	// Return the response in JSON format.
-	c.JSON(http.StatusOK, ins)
+	response.Success(c, ins)
+	// c.JSON(http.StatusOK, ins)
 }
 
 // Logout Handler function.
