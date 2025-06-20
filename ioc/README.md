@@ -1,0 +1,1 @@
+# Object registry,solves the cumbersome dependency problems of controller modules.

@@ -6,8 +6,14 @@ import (
 	"github.com/ACK-lcn/Blog/apps/user"
 	"github.com/ACK-lcn/Blog/conf"
 	"github.com/ACK-lcn/Blog/exception"
+	"github.com/ACK-lcn/Blog/ioc"
 	"gorm.io/gorm"
 )
+
+// Register UserServiceImpl to Ioc.
+func Init() {
+	ioc.Controller().Registry(&UserServiceImpl{})
+}
 
 // Used to explicitly constrain the implementation of the interface
 var _ user.Service = &UserServiceImpl{}
