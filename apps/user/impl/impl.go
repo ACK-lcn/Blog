@@ -27,6 +27,15 @@ func NewUserServiceImpl() *UserServiceImpl {
 	}
 }
 
+func (i *UserServiceImpl) Init() error {
+	i.db = conf.C().MySQL.GetConnection().Debug()
+	return nil
+}
+
+func (i *UserServiceImpl) Name() string {
+	return user.AppName
+}
+
 type UserServiceImpl struct {
 	db *gorm.DB
 }
