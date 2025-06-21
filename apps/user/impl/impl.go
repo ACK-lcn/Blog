@@ -12,7 +12,7 @@ import (
 
 // Register UserServiceImpl to Ioc.
 func Init() {
-	ioc.Controller().Registry(&UserServiceImpl{})
+	ioc.Controller().Register(&UserServiceImpl{})
 }
 
 // Used to explicitly constrain the implementation of the interface
@@ -38,6 +38,17 @@ func (i *UserServiceImpl) Name() string {
 
 type UserServiceImpl struct {
 	db *gorm.DB
+}
+
+// Init implements ioc.iocObject.
+func (*UserServiceImpl) Init() error {
+	i.db = conf.C().MySQL.GetConnection().Debug()
+	return nil
+}
+
+// Name implements ioc.iocObject.
+func (*UserServiceImpl) Name() string {
+	return user.AppName
 }
 
 // Create User

@@ -2,6 +2,10 @@ package token
 
 import "context"
 
+const (
+	AppName = "token"
+)
+
 type Service interface {
 	// login interface (Issue token)
 	Login(context.Context, *LoginRequest) (*Token, error)

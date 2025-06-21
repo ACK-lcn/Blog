@@ -8,8 +8,13 @@ import (
 	"github.com/ACK-lcn/Blog/apps/user"
 	"github.com/ACK-lcn/Blog/conf"
 	"github.com/ACK-lcn/Blog/exception"
+	"github.com/ACK-lcn/Blog/ioc"
 	"gorm.io/gorm"
 )
+
+func Init() {
+	ioc.Controller().Register(&TokenServiceImpl{})
+}
 
 type TokenServiceImpl struct {
 	// db
@@ -18,6 +23,15 @@ type TokenServiceImpl struct {
 	// It is strongly not recommended to directly operate the user module database (users).
 	// Depends on another business area: user management area
 	user user.Service
+}
+
+func (i *TokenServiceImpl) Init() error {
+	i.db = conf.C().MySQL.GetConnection().Debug()
+	return nil
+}
+
+func (i *TokenServiceImpl) Name() string {
+	return token.AppName
 }
 
 func NewTokenServiceImpl(userSvcImpl user.Service) *TokenServiceImpl {

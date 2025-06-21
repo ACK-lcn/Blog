@@ -5,12 +5,26 @@ import (
 
 	"github.com/ACK-lcn/Blog/apps/token"
 	"github.com/ACK-lcn/Blog/exception"
+	"github.com/ACK-lcn/Blog/ioc"
 	"github.com/ACK-lcn/Blog/response"
 	"github.com/gin-gonic/gin"
 )
 
+func Init() {
+	ioc.ApiHandler().Register(&TokenApiHandler{})
+}
+
 type TokenApiHandler struct {
 	svc token.Service
+}
+
+func (t *TokenApiHandler) Init() error {
+	t.svc = ioc.Controller().Get(token.AppName).(token.Service)
+	return nil
+}
+
+func (t *TokenApiHandler) Name() string {
+	return token.AppName
 }
 
 func NewTokenApiHandler(tokenServiceImpl token.Service) *TokenApiHandler {
