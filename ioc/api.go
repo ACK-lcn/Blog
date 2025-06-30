@@ -7,5 +7,5 @@ func ApiHandler() *IocContainter {
 
 // ioc registry object, globally only.
 var apiHandlerContainer = &IocContainter{
-	store: map[string]IocObject{},
+	store: map[string]iocObject{},
 }

@@ -27,27 +27,18 @@ func NewUserServiceImpl() *UserServiceImpl {
 	}
 }
 
-func (i *UserServiceImpl) Init() error {
-	i.db = conf.C().MySQL.GetConnection().Debug()
-	return nil
-}
-
-func (i *UserServiceImpl) Name() string {
-	return user.AppName
-}
-
 type UserServiceImpl struct {
 	db *gorm.DB
 }
 
 // Init implements ioc.iocObject.
-func (*UserServiceImpl) Init() error {
+func (i *UserServiceImpl) Init() error {
 	i.db = conf.C().MySQL.GetConnection().Debug()
 	return nil
 }
 
 // Name implements ioc.iocObject.
-func (*UserServiceImpl) Name() string {
+func (i *UserServiceImpl) Name() string {
 	return user.AppName
 }
 
