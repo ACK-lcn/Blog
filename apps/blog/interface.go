@@ -24,11 +24,45 @@ type Service interface {
 	AuditBlog(context.Context, *AuditBlogRequest) (*Blog, error)
 }
 
+func NewQueryBlogRequest() *QueryBlogRequest {
+	return &QueryBlogRequest{
+		PageSize:   10,
+		PageNumber: 1,
+		Usernames:  []string{},
+	}
+}
+
 type QueryBlogRequest struct {
+	// page size
+	PageSize int `json:"page_size"`
+	// Current page
+	PageNumber int `json:"page_number"`
+	// "0" DRAFT: indicates draft status, to query all blogs
+	// "nil": indicates no such filter condition
+	// "1" PUBLISHED: indicates "published status"
+	Status *Status `json:"status"`
+	// Keyword search based on article title
+	Keywords string `json:"keywords"`
+	// Query which users' blogs
+	Usernames []string `json:"usernames"`
+}
+
+func (r *QueryBlogRequest) Offset() int {
+	return int(r.PageSize * (r.PageNumber - 1))
+}
+
+func (r *QueryBlogRequest) SetStatus(s Status) {
+	r.Status = &s
 }
 
 type DescribeBlogRequest struct {
 	BlogId int64 `json:"blog_id"`
+}
+
+func NewBlogSet() *BlogSet {
+	return &BlogSet{
+		Items: []*Blog{},
+	}
 }
 
 type BlogSet struct {
@@ -36,6 +70,10 @@ type BlogSet struct {
 	Total int64 `json:"total"`
 	// Return a page of data
 	Items []*Blog `json:"items"`
+}
+
+func (s *BlogSet) Add(Items ...*Blog) {
+	s.Items = append(s.Items, Items...)
 }
 
 type UpdateBlogStatusRequest struct {

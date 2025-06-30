@@ -24,7 +24,7 @@ CREATE TABLE `users` (
   UNIQUE KEY `idx_token` (`access_token`) USING BTREE
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
-CREATE TABLE `blogs` (
+CREATE TABLE `blog` (
   `id` int unsigned NOT NULL AUTO_INCREMENT COMMENT '文章的Id',
   `tags` text CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NOT NULL COMMENT '标签',
   `created_at` int NOT NULL COMMENT '创建时间',

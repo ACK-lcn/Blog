@@ -1,5 +1,17 @@
 package blog
 
+import (
+	"time"
+
+	"encoding/json"
+)
+
+func NewCreateBlogRequest() *CreateBlogRequest {
+	return &CreateBlogRequest{
+		Tags: map[string]string{},
+	}
+}
+
 type CreateBlogRequest struct {
 	// Title of blog
 	Title string `json:"title"`
@@ -13,6 +25,14 @@ type CreateBlogRequest struct {
 	Summary string `json:"summary"`
 	// Tags
 	Tags map[string]string `json:"tags" gorm:"serializer:json"`
+}
+
+func NewBlog(req *CreateBlogRequest) *Blog {
+	return &Blog{
+		CreatedAt:         time.Now().Unix(),
+		Status:            STATUS_DRAFT,
+		CreateBlogRequest: req,
+	}
 }
 
 type Blog struct {
@@ -32,4 +52,13 @@ type Blog struct {
 	IsAuditedPass bool `json:"is_audited_pass"`
 	// Create blog request
 	*CreateBlogRequest
+}
+
+func (b *Blog) TableName() string {
+	return "blog"
+}
+
+func (b *Blog) String() string {
+	dj, _ := json.Marshal(b)
+	return string(dj)
 }
