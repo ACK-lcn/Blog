@@ -1,6 +1,9 @@
 package blog
 
-import "context"
+import (
+	"context"
+	"encoding/json"
+)
 
 const (
 	AppName = "blog"
@@ -55,8 +58,15 @@ func (r *QueryBlogRequest) SetStatus(s Status) {
 	r.Status = &s
 }
 
+func NewDescribeBlogRequest(id string) *DescribeBlogRequest {
+	return &DescribeBlogRequest{
+		BlogId: id,
+	}
+
+}
+
 type DescribeBlogRequest struct {
-	BlogId int64 `json:"blog_id"`
+	BlogId string `json:"blog_id"`
 }
 
 func NewBlogSet() *BlogSet {
@@ -70,6 +80,11 @@ type BlogSet struct {
 	Total int64 `json:"total"`
 	// Return a page of data
 	Items []*Blog `json:"items"`
+}
+
+func (b *BlogSet) String() string {
+	dj, _ := json.Marshal(b)
+	return string(dj)
 }
 
 func (s *BlogSet) Add(Items ...*Blog) {
@@ -86,9 +101,27 @@ type AuditBlogRequest struct {
 	IsAuditedPass bool  `json:"id_audited_pass"`
 }
 
+// NewPutUpdateBlogRequest create a put update request.
+func NewPutUpdateBlogRequest(id string) *UpdateBlogRequest {
+	return &UpdateBlogRequest{
+		BlogId:            id,
+		UpdateMode:        UPDATE_MODE_PUT,
+		CreateBlogRequest: NewCreateBlogRequest(),
+	}
+}
+
+// NewPatchUpdateBlogRequest create a patch update request.
+func NewPatchUpdateBlogRequest(id string) *UpdateBlogRequest {
+	return &UpdateBlogRequest{
+		BlogId:            id,
+		UpdateMode:        UPDATE_MODE_PATCH,
+		CreateBlogRequest: NewCreateBlogRequest(),
+	}
+}
+
 type UpdateBlogRequest struct {
 	// article id
-	BlogId int64 `json:"blog_id"`
+	BlogId string `json:"blog_id"`
 	// update mode  (Full update/incremental update)
 	UpdateMode UpdateMode `json:"update_mode"`
 	// User update request, the user only passed a tag
