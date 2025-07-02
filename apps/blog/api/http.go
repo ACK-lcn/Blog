@@ -21,9 +21,3 @@ func (t *apiHandler) Init() error {
 func (t *apiHandler) Name() string {
 	return blog.AppName
 }
-
-func NewTokenApiHandler(tokenServiceImpl blog.Service) *apiHandler {
-	return &apiHandler{
-		svc: tokenServiceImpl,
-	}
-}

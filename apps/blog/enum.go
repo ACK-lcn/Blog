@@ -3,7 +3,9 @@ package blog
 type Status int
 
 const (
+	//Article status draft
 	STATUS_DRAFT Status = iota
+	// Already published
 	STATUS_PUBLISHED
 )
 

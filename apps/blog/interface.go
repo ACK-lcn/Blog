@@ -121,7 +121,7 @@ func NewAuditBlogRequest(id string) *AuditBlogRequest {
 
 type AuditBlogRequest struct {
 	BlogId        string `json:"blog_id"`
-	IsAuditedPass bool   `json:"id_audited_pass"`
+	IsAuditedPass bool   `json:"is_audited_pass"`
 }
 
 // NewPutUpdateBlogRequest create a put update request.

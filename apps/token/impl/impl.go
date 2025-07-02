@@ -2,6 +2,7 @@ package impl
 
 import (
 	"context"
+	"fmt"
 	"time"
 
 	"github.com/ACK-lcn/Blog/apps/token"
@@ -109,9 +110,15 @@ func (i *TokenServiceImpl) ValiateToken(ctx context.Context, req *token.ValiateT
 	}
 
 	// Check if the token is valid.
+	uDesc := user.NewDescribeUserRequestById(fmt.Sprintf("%d", tk.UserId))
+	u, err := i.user.DescribeUser(ctx, uDesc)
+	if err != nil {
+		return nil, err
+	}
 	if err := tk.IsExpired(); err != nil {
 		return nil, err
 	}
+	tk.Role = u.Role
 
 	return tk, nil
 }
