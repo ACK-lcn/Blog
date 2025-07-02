@@ -36,8 +36,8 @@ func NewTokenApiHandler(tokenServiceImpl token.Service) *TokenApiHandler {
 // Router Register
 func (h *TokenApiHandler) Register(r gin.IRouter) {
 	v1 := r.Group("v1")
-	v1.POST("/api/blog/v1/tokens/", h.Login)
-	v1.DELETE("/api/blog/v1/tokens/", h.Logout)
+	v1.POST("/tokens/", h.Login)
+	v1.DELETE("/tokens/", h.Logout)
 }
 
 // Login Handler Function. (Handler only handles HTTP requests and responses.）

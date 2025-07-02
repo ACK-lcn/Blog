@@ -18,7 +18,7 @@ func (i *blogServiceImpl) CreateBlog(ctx context.Context, in *blog.CreateBlogReq
 	return ins, nil
 }
 
-// Query Blog
+// Query Blog (Query the article list, list query, there is no need to query the specific content of the article.)
 func (i *blogServiceImpl) QueryBlog(ctx context.Context, in *blog.QueryBlogRequest) (*blog.BlogSet, error) {
 	query := i.db.WithContext(ctx).Model(&blog.Blog{})
 	set := blog.NewBlogSet()
@@ -47,7 +47,7 @@ func (i *blogServiceImpl) QueryBlog(ctx context.Context, in *blog.QueryBlogReque
 	return set, nil
 }
 
-// Describe Blog
+// Describe Blog(Details page, try to find more content)
 func (i *blogServiceImpl) DescribeBlog(ctx context.Context, in *blog.DescribeBlogRequest) (*blog.Blog, error) {
 	query := i.db.WithContext(ctx).Model(&blog.Blog{})
 	ins := blog.NewBlog(blog.NewCreateBlogRequest())

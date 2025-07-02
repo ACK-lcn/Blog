@@ -5,6 +5,7 @@ import (
 	"fmt"
 	"time"
 
+	"github.com/ACK-lcn/Blog/apps/user"
 	"github.com/ACK-lcn/Blog/exception"
 	"github.com/rs/xid"
 )
@@ -23,8 +24,9 @@ type Token struct {
 	// Creation time
 	CreatedAt time.Time `json:"create_at" gorm:"autoCreateTime"`
 	// Update time
-	UpdatedAt int64  `json:"update_at"`
-	DeviceId  string `json:"device_id" gorm:"not null"`
+	UpdatedAt int64     `json:"update_at"`
+	DeviceId  string    `json:"device_id" gorm:"not null"`
+	Role      user.Role `gorm:"_"`
 }
 
 func NewToken() *Token {

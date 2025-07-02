@@ -3,6 +3,9 @@ package blog
 import (
 	"context"
 	"encoding/json"
+	"strconv"
+
+	"github.com/ACK-lcn/Blog/common"
 )
 
 const (
@@ -54,6 +57,20 @@ func (r *QueryBlogRequest) Offset() int {
 	return int(r.PageSize * (r.PageNumber - 1))
 }
 
+func (r *QueryBlogRequest) ParsePageSize(ps string) {
+	psInt, _ := strconv.ParseInt(ps, 10, 64)
+	if psInt != 0 {
+		r.PageSize = int(psInt)
+	}
+}
+
+func (r *QueryBlogRequest) ParsePageNumber(pn string) {
+	psInt, _ := strconv.ParseInt(pn, 10, 64)
+	if psInt != 0 {
+		r.PageNumber = int(psInt)
+	}
+}
+
 func (r *QueryBlogRequest) SetStatus(s Status) {
 	r.Status = &s
 }
@@ -96,9 +113,15 @@ type UpdateBlogStatusRequest struct {
 	Status Status `json:"status"`
 }
 
+func NewAuditBlogRequest(id string) *AuditBlogRequest {
+	return &AuditBlogRequest{
+		BlogId: id,
+	}
+}
+
 type AuditBlogRequest struct {
-	BlogId        int64 `json:"blog_id"`
-	IsAuditedPass bool  `json:"id_audited_pass"`
+	BlogId        string `json:"blog_id"`
+	IsAuditedPass bool   `json:"id_audited_pass"`
 }
 
 // NewPutUpdateBlogRequest create a put update request.
@@ -122,13 +145,21 @@ func NewPatchUpdateBlogRequest(id string) *UpdateBlogRequest {
 type UpdateBlogRequest struct {
 	// article id
 	BlogId string `json:"blog_id"`
+	// The scope of the blog is not passed in by the user, but is automatically filled in by the API interface layer
+	Scope *common.Scope `json:"scope"`
 	// update mode  (Full update/incremental update)
 	UpdateMode UpdateMode `json:"update_mode"`
 	// User update request, the user only passed a tag
 	*CreateBlogRequest
 }
 
+func NewDeleteBlogRequest(id string) *DeleteBlogRequest {
+	return &DeleteBlogRequest{
+		BlogId: id,
+	}
+}
+
 type DeleteBlogRequest struct {
 	// article id
-	BlogId int64 `json:"blog_id"`
+	BlogId string `json:"blog_id"`
 }

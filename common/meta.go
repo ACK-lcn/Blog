@@ -16,3 +16,7 @@ type Meta struct {
 	UpdateAt int64 `json:"update_at"`
 	// Label    map[string]string `json:"label"`
 }
+
+type Scope struct {
+	Username string `json:"Username"`
+}

@@ -4,7 +4,7 @@ import (
 	"fmt"
 	"os"
 
-	_ "github.com/ACK-lcn/Blog/apps"
+	// _ "github.com/ACK-lcn/Blog/apps"
 	tokenApiHandler "github.com/ACK-lcn/Blog/apps/token/api"
 	tokenImpl "github.com/ACK-lcn/Blog/apps/token/impl"
 	userImpl "github.com/ACK-lcn/Blog/apps/user/impl"

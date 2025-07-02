@@ -22,3 +22,7 @@ func NewAuthFailed(format string, a ...any) *ApiException {
 func NewTokenExpired(format string, a ...any) *ApiException {
 	return New(5001, format, a...)
 }
+
+func NewPermissionDeny(formmat string, a ...any) *ApiException {
+	return New(5002, formmat, a...)
+}
