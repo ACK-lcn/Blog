@@ -62,6 +62,7 @@ func (m *MySQL) DSN() string {
 	)
 }
 
+// return DB Connection
 func (m *MySQL) GetConnection() *gorm.DB {
 	m.lock.Lock()
 	defer m.lock.Unlock()
