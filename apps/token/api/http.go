@@ -56,9 +56,11 @@ func (h *TokenApiHandler) Login(c *gin.Context) {
 		return
 	}
 
+	// Set the token to the Web Browser Cookie
+	c.SetCookie(token.TOKEN_COOKIE_NAME, ins.AccessToken, 0, "/", "localhost", false, true)
 	// Return the response in JSON format.
-	response.Success(c, ins)
 	// c.JSON(http.StatusOK, ins)
+	response.Success(c, ins)
 }
 
 // Logout Handler function.
