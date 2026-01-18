@@ -114,5 +114,15 @@ func (i *blogServiceImpl) DeleteBlog(ctx context.Context, in *blog.DeleteBlogReq
 
 // Audit Blog
 func (i *blogServiceImpl) AuditBlog(ctx context.Context, in *blog.AuditBlogRequest) (*blog.Blog, error) {
-	return nil, nil
+	ins, err := i.DescribeBlog(ctx,blog.NewDescribeBlogRequest(in.BlogId))
+	if err !=nil{
+		return nil,err
+	}
+	ins.IsAuditedPass = in.IsAuditedPass
+	ins.AuditedAt = time.Now().Unix()
+	err = i.update(ctx,nil,ins)
+	if err !=nil{
+		return nil,err
+	}
+	return ins, nil
 }
