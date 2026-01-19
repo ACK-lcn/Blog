@@ -7,6 +7,8 @@ import (
 
 	"dario.cat/mergo"
 	"github.com/ACK-lcn/Blog/apps/blog"
+	"github.com/ACK-lcn/Blog/exception"
+	"gorm.io/gorm"
 )
 
 // Create Blog
@@ -53,11 +55,14 @@ func (i *blogServiceImpl) DescribeBlog(ctx context.Context, in *blog.DescribeBlo
 	ins := blog.NewBlog(blog.NewCreateBlogRequest())
 
 	// SELECT * FROM `blog` WHERE id = '66'
-	err := query.Where("id = ?", in.BlogId).Find(ins).Error
+	err := query.Where("id = ?", in.BlogId).First(ins).Error
 	if err != nil {
+		if err == gorm.ErrRecordNotFound {
+			return nil, exception.NewNotFound("blog %s not found", in.BlogId)
+		}
 		return nil, err
 	}
-	return nil, nil
+	return ins, nil
 }
 
 // Update Blog (Includes: full update and incremental update.)
@@ -99,8 +104,43 @@ func (i *blogServiceImpl) UpdateBlog(ctx context.Context, in *blog.UpdateBlogReq
 }
 
 // Update Blog Status
-func (i *blogServiceImpl) updateBlogStatus(ctx context.Context, in *blog.UpdateBlogStatusRequest) (*blog.Blog, error) {
-	return nil, nil
+func (i *blogServiceImpl) UpdateBlogStatus(ctx context.Context, in *blog.UpdateBlogStatusRequest) (*blog.Blog, error) {
+	if in == nil {
+		return nil, fmt.Errorf("nil UpdateBlogStatusRequest")
+	}
+	if in.BlogId <= 0 {
+		return nil, fmt.Errorf("invalid blog_id: %d", in.BlogId)
+	}
+	if in.Status != blog.STATUS_DRAFT && in.Status != blog.STATUS_PUBLISHED {
+		return nil, fmt.Errorf("invalid status: %d", in.Status)
+	}
+
+	ins := blog.NewBlog(blog.NewCreateBlogRequest())
+	err := i.db.WithContext(ctx).Model(&blog.Blog{}).Where("id = ?", in.BlogId).First(ins).Error
+	if err != nil {
+		if err == gorm.ErrRecordNotFound {
+			return nil, exception.NewNotFound("blog %d not found", in.BlogId)
+		}
+		return nil, err
+	}
+
+	now := time.Now().Unix()
+	ins.Status = in.Status
+	ins.UpdatedAt = now
+	if in.Status == blog.STATUS_PUBLISHED {
+		// First time publish: set publish time.
+		if ins.PublishedAt == 0 {
+			ins.PublishedAt = now
+		}
+	} else {
+		// Draft: clear publish time.
+		ins.PublishedAt = 0
+	}
+
+	if err := i.update(ctx, nil, ins); err != nil {
+		return nil, err
+	}
+	return ins, nil
 }
 
 // Delete Blog (SQL Snytax: DELETE FROM `blog` WHERE id = '666')

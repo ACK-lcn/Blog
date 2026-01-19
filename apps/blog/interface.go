@@ -21,7 +21,7 @@ type Service interface {
 	// Details page, try to find more content
 	DescribeBlog(context.Context, *DescribeBlogRequest) (*Blog, error)
 	// Modify article status
-	updateBlogStatus(context.Context, *UpdateBlogStatusRequest) (*Blog, error)
+	UpdateBlogStatus(context.Context, *UpdateBlogStatusRequest) (*Blog, error)
 	// Update article
 	UpdateBlog(context.Context, *UpdateBlogRequest) (*Blog, error)
 	//  Delete article
