@@ -11,10 +11,9 @@ import (
 	"time"
 
 	// _ "github.com/ACK-lcn/Blog/apps"
-
-	"github.com/ACK-lcn/Blog/apps/protocol"
 	"github.com/ACK-lcn/Blog/conf"
 	"github.com/ACK-lcn/Blog/ioc"
+	"github.com/ACK-lcn/Blog/protocol"
 	"google.golang.org/grpc"
 )
 
