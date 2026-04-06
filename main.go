@@ -81,4 +81,6 @@ func main() {
 	ctx, cancel := context.WithTimeout(context.Background(), 30*time.Second)
 	defer cancel()
 	httpServer.Close(ctx)
+
+	fmt.Println("清理工作")
 }
