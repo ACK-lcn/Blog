@@ -32,13 +32,21 @@
 <script setup>
 import { state } from "../stores/app";
 import { useRouter } from "vue-router";
+import { LOGOUT } from "../api/token";
 
 const router = useRouter();
-const logout = () => {
+const logout = async () => {
+  const access_token = state.value.token?.access_token;
+  const refresh_token = state.value.token?.refresh_token ?? "";
+  if (access_token) {
+    try {
+      await LOGOUT({ access_token, refresh_token });
+    } catch {
+      // 网络异常或 Token 已失效时仍清理本地状态并回到登录页
+    }
+  }
   state.value.is_login = false;
-  // 调用后端的Token销毁接口(留给你们自己实现)
-
-  // 重新跳转到登录页面进行重新登录
+  state.value.token = {};
   router.push({ name: "Login" });
 };
 const login = () => {

@@ -11,8 +11,8 @@ import (
 	"github.com/gin-gonic/gin"
 )
 
-// Router Register
-func (h *apiHandler) Register(r gin.IRouter) {
+// Router Register（方法名须与 ioc.GinApiHandler.Registry 一致）
+func (h *apiHandler) Registry(r gin.IRouter) {
 	v1 := r.Group("v1").Group("blog")
 	v1.POST("/", h.CreateBlog)
 	v1.GET("/", h.QueryBlog)

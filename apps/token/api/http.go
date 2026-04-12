@@ -33,8 +33,8 @@ func NewTokenApiHandler(tokenServiceImpl token.Service) *TokenApiHandler {
 	}
 }
 
-// Router Register
-func (h *TokenApiHandler) Register(r gin.IRouter) {
+// Router Register（方法名须与 ioc.GinApiHandler.Registry 一致）
+func (h *TokenApiHandler) Registry(r gin.IRouter) {
 	v1 := r.Group("v1")
 	v1.POST("/tokens/", h.Login)
 	v1.DELETE("/tokens/", h.Logout)
