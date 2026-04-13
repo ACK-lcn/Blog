@@ -77,10 +77,14 @@ const handleSubmit = async (data) => {
     state.value.is_login = true;
     state.value.token = resp;
 
-    // 需要跳转 后台页面, Vue router的 Router对象
-    // 通过 vue router库来获取一个router对象
-    // name 路由的名称
-    router.push({ name: "BackendBlogs" });
+    const redirectName = router.currentRoute.value.query.redirectName;
+
+    // 登录成功后优先跳回访问前页面, 否则进入默认后台列表页
+    if (typeof redirectName === "string" && redirectName.length > 0) {
+      router.push({ name: redirectName });
+    } else {
+      router.push({ name: "BackendBlogs" });
+    }
   } catch (error) {
     // 就是Promise 的Reject 的error
     console.log(error);

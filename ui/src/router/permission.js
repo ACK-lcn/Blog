@@ -9,7 +9,12 @@ export var beforeEach = async (to) => {
       // 自己完善: 用户访问的目标页面是: CommentList,
       // 跳转到登录页面 登录成功后(携带上目标页面的路由名称), 需要重定向到目标页面去(push)
       // 直接Return路由
-      return { name: "Login" };
+      return {
+        name: "Login",
+        query: {
+          redirectName: to.name,
+        },
+      };
     }
   }
 };
