@@ -14,7 +14,3 @@ export const state = useStorage(
   localStorage,
   { mergeDefaults: true }
 );
-
-//
-// console.log(state.value.hello) // 'nihao', from storage
-// console.log(state.value.greeting) // 'hello', from merged default value
